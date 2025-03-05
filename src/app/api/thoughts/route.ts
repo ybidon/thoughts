@@ -15,13 +15,16 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const { content } = await request.json()
+    const { content, imageUrl } = await request.json()
     if (!content) {
       return NextResponse.json({ error: 'Content is required' }, { status: 400 })
     }
 
     const thought = await prisma.thought.create({
-      data: { content }
+      data: { 
+        content,
+        imageUrl: imageUrl || null
+      }
     })
     return NextResponse.json(thought)
   } catch (error) {
