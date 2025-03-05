@@ -222,8 +222,12 @@ export default function Home() {
                 }}
               >
                 <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <p className={`${expandedId === thought.id ? 'text-xl' : 'text-lg line-clamp-3'}`}>
+                  <div className="flex-1 overflow-hidden">
+                    <p className={`${
+                      expandedId === thought.id 
+                        ? 'text-xl break-words whitespace-pre-wrap' 
+                        : 'text-lg line-clamp-3 break-words'
+                    }`}>
                       {thought.content}
                     </p>
                     <button
