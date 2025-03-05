@@ -4,29 +4,27 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma generate"
+    "lint": "next lint"
   },
   "dependencies": {
     "@prisma/client": "^6.4.1",
-    "@vercel/blob": "^0.27.2",
-    "@vercel/postgres": "^0.10.0",
+    "@vercel/blob": "^0.22.1",
     "next": "15.2.1",
-    "prisma": "^6.4.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
     "eslint-config-next": "15.2.1",
-    "tailwindcss": "^4",
+    "postcss": "^8",
+    "prisma": "^6.4.1",
+    "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
 }
