@@ -17,6 +17,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [expandedId, setExpandedId] = useState<number | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -208,12 +209,53 @@ export default function Home() {
             <p className="text-gray-500 italic">No thoughts archived yet. Write something!</p>
           ) : (
             thoughts.map((thought) => (
-              <div key={thought.id} className="p-6 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
+              <div 
+                key={thought.id} 
+                className={`p-6 border rounded-lg bg-white shadow-sm transition-all duration-200 ${
+                  expandedId === thought.id ? 'shadow-lg scale-[1.02]' : 'hover:shadow-md cursor-pointer'
+                }`}
+                onClick={(e) => {
+                  // Prevent toggling when clicking delete button
+                  if (!(e.target as HTMLElement).closest('button')) {
+                    setExpandedId(expandedId === thought.id ? null : thought.id)
+                  }
+                }}
+              >
                 <div className="flex justify-between items-start mb-4">
-                  <p className="text-lg">{thought.content}</p>
+                  <div className="flex-1">
+                    <p className={`${expandedId === thought.id ? 'text-xl' : 'text-lg line-clamp-3'}`}>
+                      {thought.content}
+                    </p>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedId(expandedId === thought.id ? null : thought.id)
+                      }}
+                      className="mt-2 text-blue-500 hover:text-blue-600 text-sm flex items-center gap-1"
+                    >
+                      {expandedId === thought.id ? (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                          </svg>
+                          Show less
+                        </>
+                      ) : (
+                        <>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                          </svg>
+                          Show more
+                        </>
+                      )}
+                    </button>
+                  </div>
                   <button
-                    onClick={() => handleDelete(thought.id)}
-                    className="text-red-500 hover:text-red-600 p-1 rounded-full hover:bg-red-50 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(thought.id);
+                    }}
+                    className="text-red-500 hover:text-red-600 p-1 rounded-full hover:bg-red-50 transition-colors shrink-0 ml-4"
                     disabled={isLoading}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -222,7 +264,9 @@ export default function Home() {
                   </button>
                 </div>
                 {thought.imageUrl && (
-                  <div className="relative w-full h-64 mb-4">
+                  <div className={`relative mb-4 transition-all duration-300 ${
+                    expandedId === thought.id ? 'w-full h-[500px]' : 'w-full h-48'
+                  }`}>
                     <Image
                       src={thought.imageUrl}
                       alt="Thought image"
