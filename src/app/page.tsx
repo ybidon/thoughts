@@ -10,7 +10,7 @@ interface Thought {
   createdAt: string
 }
 
-const PASSWORD = 'thoughts123' // You can change this to any password you want
+const PASSWORD = 'LOH' // You can change this to any password you want
 
 export default function Home() {
   const [thoughts, setThoughts] = useState<Thought[]>([])
